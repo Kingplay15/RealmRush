@@ -56,6 +56,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tile_RoadCorner270
       objectReference: {fileID: 0}
+    - target: {fileID: 7355390823019593814, guid: c1c5072e82c489148bd4a9b95efa08e6, type: 3}
+      propertyPath: isPlaceable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7573779075724528104, guid: c1c5072e82c489148bd4a9b95efa08e6, type: 3}
       propertyPath: m_LocalRotation.w
       value: -0.7071068

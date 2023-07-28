@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 623885758013005143, guid: bb34ed346c46e754085dc8a2fd1b78e2, type: 3}
+      propertyPath: isPlaceable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2427321301102018692, guid: bb34ed346c46e754085dc8a2fd1b78e2, type: 3}
       propertyPath: m_Name
       value: Tile_RoadStraight
