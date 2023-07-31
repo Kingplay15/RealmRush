@@ -4991,6 +4991,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6441794353489363261}
   - component: {fileID: 2943936660789334697}
+  - component: {fileID: 8974122183823697684}
   m_Layer: 0
   m_Name: Ballista
   m_TagString: Untagged
@@ -5027,4 +5028,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e7444e6319829141b9f811cc65ec326, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackRange: 15
   weapon: {fileID: 6383469844739417840}
+  projecttileParticles: {fileID: 3643835254708308644}
+--- !u!114 &8974122183823697684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6888459020345375130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08550c95a1ff891409150c37628bdd74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cost: 75

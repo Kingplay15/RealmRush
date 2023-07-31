@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,7 +8,9 @@ public class EnemyMover : MonoBehaviour
     [SerializeField] private List<Waypoint> path = new List<Waypoint>();
     [SerializeField] [Range(0f, 5f)] private float moveSpeed = 1f;
 
-    private void Start()
+    public EventHandler OnReachingDestinationEvent;
+
+    private void OnEnable()
     {
         FindPath();
         ReturnToStart();
@@ -47,6 +50,12 @@ public class EnemyMover : MonoBehaviour
                 yield return new WaitForEndOfFrame();
             }
         }
-        Destroy(gameObject);
+        OnReachingDestination();
+    }
+
+    private void OnReachingDestination()
+    {
+        OnReachingDestinationEvent?.Invoke(this, EventArgs.Empty);
+        gameObject.SetActive(false);
     }
 }

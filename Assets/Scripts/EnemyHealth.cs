@@ -8,7 +8,9 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField] private int maxHealth = 5;
     [SerializeField] private int currHealth = 0;
 
-    private void Start()
+    public EventHandler OnDeathEvent;
+
+    private void OnEnable()
     {
         currHealth = maxHealth;
     }
@@ -22,6 +24,10 @@ public class EnemyHealth : MonoBehaviour
     {
         currHealth--;
         if (currHealth <= 0)
-            Destroy(gameObject);
+        {
+            OnDeathEvent?.Invoke(this, EventArgs.Empty);
+            gameObject.SetActive(false);
+        }
+            
     }
 }
