@@ -5,10 +5,10 @@ using UnityEngine;
 public class ObjectPool : MonoBehaviour
 {
     [SerializeField] private GameObject enemyPrefab;
-    [SerializeField] private float spawnTimer = 1f;
+    [SerializeField] [Range(0.5f, 20f)] private float spawnTimer = 1f;
 
     private GameObject[] pool;
-    [SerializeField] private int poolSize = 5;
+    [SerializeField] [Range(0, 10)] private int poolSize = 5;
 
     private void Awake()
     {
