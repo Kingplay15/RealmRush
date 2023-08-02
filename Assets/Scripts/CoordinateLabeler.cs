@@ -8,22 +8,24 @@ using System;
 [RequireComponent(typeof(TextMeshPro))]
 public class CoordinateLabeler : MonoBehaviour
 {
-    [SerializeField] private Color defaultColor = Color.red;
+    [SerializeField] private Color defaultColor = Color.white;
     [SerializeField] private Color blockedColor = Color.grey;
+    [SerializeField] private Color exploredColor = Color.yellow;
+    [SerializeField] private Color pathColor = new Color(1f, 0.5f, 0f); //Orange
+
+    private GridManager gridManager;
 
     private TextMeshPro label;
     private Vector2Int coordiantes = new Vector2Int();
-    private Waypoint waypoint;
 
     private void Awake()
     {
         label = GetComponent<TextMeshPro>();
-        waypoint = GetComponentInParent<Waypoint>();
+        gridManager = FindObjectOfType<GridManager>();
         label.enabled = false;
         DisplayCoordinates();
     }
 
-    // Update is called once per frame
     private void Update()
     {
         if (!Application.isPlaying) //Executes in editor mode only
@@ -43,9 +45,19 @@ public class CoordinateLabeler : MonoBehaviour
 
     private void SetLabelsColor()
     {
-        if (waypoint.IsPlaceable)
-            label.color = defaultColor;
-        else label.color = blockedColor;
+        if (gridManager == null)
+            return;
+        Node node = gridManager.GetNode(coordiantes);
+        if (node == null)
+            return;
+
+        if (!node.isWalkable)
+            label.color = blockedColor;
+        else if (node.isPath)
+            label.color = pathColor;
+        else if (node.isExplored)
+            label.color = exploredColor;
+        else label.color = defaultColor;
     }
 
     private void DisplayCoordinates()
