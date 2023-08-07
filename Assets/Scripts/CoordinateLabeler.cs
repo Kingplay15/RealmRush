@@ -16,7 +16,7 @@ public class CoordinateLabeler : MonoBehaviour
     private GridManager gridManager;
 
     private TextMeshPro label;
-    private Vector2Int coordiantes = new Vector2Int();
+    private Vector2Int coordinates = new Vector2Int();
 
     private void Awake()
     {
@@ -47,7 +47,7 @@ public class CoordinateLabeler : MonoBehaviour
     {
         if (gridManager == null)
             return;
-        Node node = gridManager.GetNode(coordiantes);
+        Node node = gridManager.GetNode(coordinates);
         if (node == null)
             return;
 
@@ -62,11 +62,10 @@ public class CoordinateLabeler : MonoBehaviour
 
     private void DisplayCoordinates()
     {
-        //Todo: Move this script into an Editor folder when building the game
-        coordiantes.x = Mathf.RoundToInt(-transform.parent.position.x / UnityEditor.EditorSnapSettings.move.x);
-        coordiantes.y = Mathf.RoundToInt(-transform.parent.position.z / UnityEditor.EditorSnapSettings.move.z);
+        coordinates.x = Mathf.RoundToInt(-transform.parent.position.x / gridManager.UnityGridSize);
+        coordinates.y = Mathf.RoundToInt(-transform.parent.position.z / gridManager.UnityGridSize);
 
-        label.text = coordiantes.x.ToString() + "," + coordiantes.y.ToString();
+        label.text = coordinates.x.ToString() + "," + coordinates.y.ToString();
     }
 
     private void UpdateName()

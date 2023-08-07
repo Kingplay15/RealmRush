@@ -5,7 +5,13 @@ using UnityEngine;
 public class GridManager : MonoBehaviour
 {
     [SerializeField] private Vector2Int gridSize;
+    [Tooltip("This should match UnityEditor Snap Setting")]
+    [SerializeField] private int unityGridSize = 10;
+    public int UnityGridSize { get => unityGridSize; }
+
+
     private Dictionary<Vector2Int, Node> grid = new Dictionary<Vector2Int, Node>();
+    public Dictionary<Vector2Int, Node> Grid { get => grid; }
 
     private void Awake()
     {
@@ -19,7 +25,6 @@ public class GridManager : MonoBehaviour
             {
                 Vector2Int coordinates = new Vector2Int(x, y);
                 grid.Add(coordinates, new Node(coordinates, true));
-                Debug.Log(grid[coordinates].coordinates + "+" + grid[coordinates].isWalkable);
             }
     }
 
@@ -28,5 +33,27 @@ public class GridManager : MonoBehaviour
         if (grid.ContainsKey(coordinates))
             return grid[coordinates];
         return null;
+    }
+
+    public void BlockNode(Vector2Int coordinates)
+    {
+        if (grid.ContainsKey(coordinates))
+            grid[coordinates].isWalkable = false;
+    }
+
+    public Vector2Int GetCoordintesFromPosition(Vector3 position)
+    {
+        Vector2Int coordinates = new Vector2Int();
+        coordinates.x = Mathf.RoundToInt(-position.x / UnityGridSize);
+        coordinates.y = Mathf.RoundToInt(-position.z / UnityGridSize);
+        return coordinates;
+    }
+
+    public Vector3 GetPositionFromCoordinates(Vector2Int coordinates)
+    {
+        Vector3 position = new Vector3();
+        position.x = -coordinates.x * unityGridSize;
+        position.z = -coordinates.y * unityGridSize;
+        return position;
     }
 }
