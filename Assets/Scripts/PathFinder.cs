@@ -6,7 +6,9 @@ using UnityEngine;
 public class PathFinder : MonoBehaviour
 {
     [SerializeField] private Vector2Int startCoordinates;
+    public Vector2Int StartCoordinates { get => startCoordinates; }
     [SerializeField] private Vector2Int endCoordinates;
+    public Vector2Int EndCoordinates { get => endCoordinates; }
 
     private Node startNode;
     private Node currentSearchNode;
@@ -22,15 +24,28 @@ public class PathFinder : MonoBehaviour
     private void Awake()
     {
         gridManager = FindObjectOfType<GridManager>();
-        grid = gridManager.Grid;        
+        grid = gridManager.Grid;
+        SetUpPath();
     }
 
     private void Start()
+    {        
+        GetNewPath();
+    }
+
+    private void SetUpPath()
     {
         startNode = grid[startCoordinates];
+        startNode.isWalkable = true;
         endNode = grid[endCoordinates];
+        endNode.isWalkable = true;
+    }
+
+    public List<Node> GetNewPath()
+    {
+        gridManager.ResetNodes();
         BreathFirstSearch();
-        BuildPath();
+        return BuildPath();
     }
 
     private void ExploreNeighbors()
@@ -57,6 +72,9 @@ public class PathFinder : MonoBehaviour
 
     private void BreathFirstSearch()
     {
+        frontier.Clear();
+        exploreds.Clear();
+
         frontier.Enqueue(startNode);
         exploreds.Add(startCoordinates, startNode);
 
@@ -83,5 +101,27 @@ public class PathFinder : MonoBehaviour
         }
         path.Reverse();
         return path;
+    }
+
+    public bool WillBlockPath(Vector2Int coordinates)
+    {
+        if (grid.ContainsKey(coordinates))
+        {
+            bool previousState = grid[coordinates].isWalkable;
+            grid[coordinates].isWalkable = false;
+            List<Node> newPath = GetNewPath();
+            grid[coordinates].isWalkable = previousState;
+            if (newPath.Count <= 1)
+            {
+                GetNewPath();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void NotifyReceivers()
+    {
+        BroadcastMessage("RecalculatePath", SendMessageOptions.DontRequireReceiver);
     }
 }

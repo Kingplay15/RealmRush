@@ -10,11 +10,13 @@ public class Tile : MonoBehaviour
     [SerializeField] private Tower towerPrefab;
 
     private GridManager gridManager;
+    private PathFinder pathFinder;
     private Vector2Int coordinates;
 
     private void Awake()
     {
         gridManager = FindObjectOfType<GridManager>();
+        pathFinder = FindObjectOfType<PathFinder>();
     }
 
     private void Start()
@@ -26,10 +28,15 @@ public class Tile : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (isPlaceable)
+        if (gridManager.GetNode(coordinates).isWalkable && !pathFinder.WillBlockPath(coordinates))
         {
-            bool isPlaced = towerPrefab.CreateTower(transform.position);
-            isPlaceable = !isPlaced;
+            bool isSuccessful = towerPrefab.CreateTower(transform.position);
+            if (isSuccessful)
+            {
+                gridManager.BlockNode(coordinates);
+                pathFinder.NotifyReceivers();
+            }
+                
         }
     }
 }

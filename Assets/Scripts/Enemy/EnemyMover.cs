@@ -5,40 +5,44 @@ using UnityEngine;
 
 public class EnemyMover : MonoBehaviour
 {
-    [SerializeField] private List<Tile> path = new List<Tile>();
     [SerializeField] [Range(0f, 5f)] private float moveSpeed = 1f;
+    private List<Node> path = new List<Node>();
+
+    private GridManager gridManager;
+    private PathFinder pathFinder;
 
     public EventHandler OnReachingDestinationEvent;
 
+    private void Awake()
+    {
+        gridManager = FindObjectOfType<GridManager>();
+        pathFinder = FindObjectOfType<PathFinder>();
+    }
+
     private void OnEnable()
     {
-        FindPath();
+        RecalculatePath();
         ReturnToStart();
         StartCoroutine(FollowPath());
     }
 
-    private void FindPath()
+    private void RecalculatePath()
     {
         path.Clear();
-
-        GameObject enemyPath = GameObject.FindGameObjectWithTag("Path");
-        foreach(Transform child in enemyPath.transform)
-        {
-            path.Add(child.GetComponent<Tile>());
-        }
+        path = pathFinder.GetNewPath();
     }
 
     private void ReturnToStart()
     {
-        transform.position = path[0].transform.position;
+        transform.position = gridManager.GetPositionFromCoordinates(pathFinder.StartCoordinates);
     }
 
     private IEnumerator FollowPath()
     {
-        foreach (Tile wayponint in path)
+        for (int i = 0; i < path.Count; i++) 
         {
             Vector3 startingPosition = transform.position;
-            Vector3 endPosition = wayponint.transform.position;
+            Vector3 endPosition = gridManager.GetPositionFromCoordinates(path[i].coordinates);
             float travelPercent = 0f;
 
             transform.LookAt(endPosition);
