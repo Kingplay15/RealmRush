@@ -43,8 +43,14 @@ public class PathFinder : MonoBehaviour
 
     public List<Node> GetNewPath()
     {
+        return GetNewPath(startCoordinates);
+    }
+
+    public List<Node> GetNewPath(Vector2Int coordinates)
+    {
         gridManager.ResetNodes();
-        BreathFirstSearch();
+        BreathFirstSearch(coordinates);
+        //Debug.Log(endNode.connectedTo == null);
         return BuildPath();
     }
 
@@ -64,19 +70,20 @@ public class PathFinder : MonoBehaviour
             if (!exploreds.ContainsKey(neighbor.coordinates) && neighbor.isWalkable) 
             {
                 neighbor.connectedTo = currentSearchNode;
+                //Debug.Log(endNode.connectedTo == null);
                 frontier.Enqueue(neighbor);
                 exploreds.Add(neighbor.coordinates, neighbor);
             }            
         }
     }
 
-    private void BreathFirstSearch()
+    private void BreathFirstSearch(Vector2Int coordinates)
     {
         frontier.Clear();
         exploreds.Clear();
 
-        frontier.Enqueue(startNode);
-        exploreds.Add(startCoordinates, startNode);
+        frontier.Enqueue(grid[coordinates]);
+        exploreds.Add(coordinates, grid[coordinates]);
 
         while (frontier.Count > 0)
         {
@@ -92,13 +99,14 @@ public class PathFinder : MonoBehaviour
     {
         List<Node> path = new List<Node>();
         Node currentNode = endNode;
-
+        //Debug.Log(currentNode.connectedTo == null);
         while (currentNode != null)
         {
             currentNode.isPath = true;
             path.Add(currentNode);
             currentNode = currentNode.connectedTo;
         }
+        //Debug.Log(path.Count);
         path.Reverse();
         return path;
     }
@@ -111,6 +119,7 @@ public class PathFinder : MonoBehaviour
             grid[coordinates].isWalkable = false;
             List<Node> newPath = GetNewPath();
             grid[coordinates].isWalkable = previousState;
+            //Debug.Log(newPath.Count);
             if (newPath.Count <= 1)
             {
                 GetNewPath();
@@ -122,6 +131,6 @@ public class PathFinder : MonoBehaviour
 
     public void NotifyReceivers()
     {
-        BroadcastMessage("RecalculatePath", SendMessageOptions.DontRequireReceiver);
+        BroadcastMessage("RecalculatePath", false, SendMessageOptions.DontRequireReceiver);
     }
 }

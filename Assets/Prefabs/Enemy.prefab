@@ -131,8 +131,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e11f676b4e563c1439bb7144359d7a67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  path: []
-  moveSpeed: 1
+  moveSpeed: 0.2
 --- !u!114 &5947286130184982077
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -145,7 +144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6985e01d29659eb4c89cd60662644b5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 5
+  maxHealth: 1000
   currHealth: 0
 --- !u!114 &2791108380216682042
 MonoBehaviour:
@@ -159,6 +158,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb91108e32d09214685de8997720a62c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  goldReward: 25
+  goldPenalty: 25
 --- !u!65 &8342066375489830052
 BoxCollider:
   m_ObjectHideFlags: 0
