@@ -70,7 +70,6 @@ public class PathFinder : MonoBehaviour
             if (!exploreds.ContainsKey(neighbor.coordinates) && neighbor.isWalkable) 
             {
                 neighbor.connectedTo = currentSearchNode;
-                //Debug.Log(endNode.connectedTo == null);
                 frontier.Enqueue(neighbor);
                 exploreds.Add(neighbor.coordinates, neighbor);
             }            
@@ -81,6 +80,8 @@ public class PathFinder : MonoBehaviour
     {
         frontier.Clear();
         exploreds.Clear();
+        if (!grid[coordinates].isWalkable)
+            return;
 
         frontier.Enqueue(grid[coordinates]);
         exploreds.Add(coordinates, grid[coordinates]);
@@ -99,14 +100,12 @@ public class PathFinder : MonoBehaviour
     {
         List<Node> path = new List<Node>();
         Node currentNode = endNode;
-        //Debug.Log(currentNode.connectedTo == null);
         while (currentNode != null)
         {
             currentNode.isPath = true;
             path.Add(currentNode);
             currentNode = currentNode.connectedTo;
         }
-        //Debug.Log(path.Count);
         path.Reverse();
         return path;
     }
@@ -119,7 +118,6 @@ public class PathFinder : MonoBehaviour
             grid[coordinates].isWalkable = false;
             List<Node> newPath = GetNewPath();
             grid[coordinates].isWalkable = previousState;
-            //Debug.Log(newPath.Count);
             if (newPath.Count <= 1)
             {
                 GetNewPath();
